@@ -9,8 +9,8 @@ let Application = PIXI.Application,
 
 //Create a Pixi Application
 let app = new Application({ 
-    width: 300, 
-    height: 300,
+    width: 256, 
+    height: 256,
     antialias: true, 
     transparent: false, 
     resolution: 1
@@ -29,12 +29,32 @@ loader
 
 function testureAtlasSetup() {
   let id = PIXI.loader.resources["../imgs/spritesheet.json"].textures;
-  for (let i = 0; i < 300; i+=30) {
-    let sprite = new Sprite(id['1']);
-    sprite.position.set(i, 0)//move sprite
+  let player = new Sprite(id['1']);
+  player.position.set(60, 60)
+  player.vx = 0;
+  player.vy = 0;
+  app.stage.addChild(player);
+  app.ticker.add(() => gameLoop(player))//animation
+
+
+  for (let i = 0, j = 0; i < 300; i+=30) {
+    let sprite = new Sprite(id['0']);
+    sprite.position.set(i, j)//move sprite
     app.stage.addChild(sprite);
   }  
 }
+
+function gameLoop(obj){
+  //Update the cat's velocity
+  obj.vx = 1;
+  obj.vy = 1;
+
+  //Apply the velocity values to the obj's 
+  //position to make it move
+  obj.x += obj.vx;
+  obj.y += obj.vy;
+}
+
 //This `basicSetup` function will run when the image has loaded
 function basicSetup() {
   console.log('All files loaded');
