@@ -34,23 +34,57 @@ function testureAtlasSetup() {
   player.vx = 0;
   player.vy = 0;
   app.stage.addChild(player);
+  
+  let left = keyboard(37),
+      up = keyboard(38),
+      right = keyboard(39),
+      down = keyboard(40);
+  
+  left.press = () => {
+    player.vx = -5;
+    player.vy = 0;
+  };
+
+  left.release = () => {
+    if (!right.isDown && player.vy === 0) {
+      player.vx = 0;
+    }
+  };
+  //Right
+  right.press = () => {
+    player.vx = 5;
+    player.vy = 0;
+  };
+  right.release = () => {
+    if (!left.isDown && player.vy === 0) {
+      player.vx = 0;
+    }
+  };
+
+  up.press = () => {
+    player.vy = -5;
+    player.vx = 0;
+  };
+  up.release = () => {
+    if (!down.isDown && player.vx === 0) {
+      player.vy = 0;
+    }
+  };
+
+  //Down
+  down.press = () => {
+    player.vy = 5;
+    player.vx = 0;
+  };
+  down.release = () => {
+    if (!up.isDown && player.vx === 0) {
+      player.vy = 0;
+    }
+  };
   app.ticker.add(() => gameLoop(player))//animation
-
-
-  for (let i = 0, j = 0; i < 300; i+=30) {
-    let sprite = new Sprite(id['0']);
-    sprite.position.set(i, j)//move sprite
-    app.stage.addChild(sprite);
-  }  
 }
 
 function gameLoop(obj){
-  //Update the cat's velocity
-  obj.vx = 1;
-  obj.vy = 1;
-
-  //Apply the velocity values to the obj's 
-  //position to make it move
   obj.x += obj.vx;
   obj.y += obj.vy;
 }
@@ -81,4 +115,41 @@ function basicSetup() {
 function loadProgressHandler (loader, resource) {
   console.log('loading: ' + resource.url); 
   console.log('progress: ' + loader.progress + '%'); 
+}
+
+function keyboard(keyCode) {
+  let key = {};
+  key.code = keyCode;
+  key.isDown = false;
+  key.isUp = true;
+  key.press = undefined;
+  key.release = undefined;
+  //The `downHandler`
+  key.downHandler = event => {
+    if (event.keyCode === key.code) {
+      if (key.isUp && key.press) key.press();
+      key.isDown = true;
+      key.isUp = false;
+    }
+    event.preventDefault();
+  };
+
+  //The `upHandler`
+  key.upHandler = event => {
+    if (event.keyCode === key.code) {
+      if (key.isDown && key.release) key.release();
+      key.isDown = false;
+      key.isUp = true;
+    }
+    event.preventDefault();
+  };
+
+  //Attach event listeners
+  window.addEventListener(
+    "keydown", key.downHandler.bind(key), false
+  );
+  window.addEventListener(
+    "keyup", key.upHandler.bind(key), false
+  );
+  return key;
 }
