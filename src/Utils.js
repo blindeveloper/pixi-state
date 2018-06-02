@@ -45,8 +45,8 @@ const Utils = {
     },
     createProject: () => {
       return new PIXI.Application({ 
-        width: 256, 
-        height: 256,
+        width: 512, 
+        height: 512,
         antialias: true, 
         transparent: false, 
         resolution: 1

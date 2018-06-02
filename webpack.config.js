@@ -11,6 +11,7 @@ module.exports = {
   devServer: {
     historyApiFallback: true
   },
+  watch: true,
   plugins: [
     new HtmlWebpackPlugin({
       title:'React init',
