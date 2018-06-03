@@ -1,10 +1,10 @@
-import Utils from './Utils'
+import { keyboard } from './Utils'
 
-const Move = (object) => {
-  let left = Utils.keyboard(37),
-      up = Utils.keyboard(38),
-      right = Utils.keyboard(39),
-      down = Utils.keyboard(40);
+const ActionListener = (object) => {
+  let left = keyboard(37),
+      up = keyboard(38),
+      right = keyboard(39),
+      down = keyboard(40);
   
   left.press = () => {
     object.vx = -5;
@@ -51,4 +51,4 @@ const Move = (object) => {
   };
 }
 
-export default Move
+export default ActionListener
