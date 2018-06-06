@@ -1,10 +1,19 @@
 import {loadProgressHandler, createProject, getNewTexture, hitTestRectangle, randomInt, contain } from './Utils'
 import ActionListener from './ActionListener'
-import GetAwesomeSpriteGroup from './GetAwesomeSpriteGroup'
-import GraphicPrimitives from './GraphicPrimitives'
 
 //Create a Pixi Application
-let app, texturesList, state, explorer, dungeon, gameScene, treasure, door, healthBar, message, gameOverScene
+let app,
+    texturesList,
+    state,
+    explorer,
+    dungeon,
+    gameScene,
+    treasure,
+    door,
+    healthBar,
+    message,
+    gameOverScene,
+    explorerHit
 let blobs = []
 
 app = createProject()
@@ -93,24 +102,18 @@ function setup() {
   state = play
   //add `gameScene` to the stage
   app.stage.addChild(gameScene)
-  //add `gameOverScene` to the stage
-  app.stage.addChild(gameOverScene)
   //animation
   app.ticker.add(() => gameLoop())
 }
 
 function play() {//All the game logic goes here
-  //colision exumple
-  if (hitTestRectangle(explorer, treasure)) {
-    console.log('colision')
-  }
-  //Move the explorer and contain it inside the dungeon
+  //Move the explorer and 
   explorer.x += explorer.vx
   explorer.y += explorer.vy
+  //contain explorer inside the dungeon
   contain(explorer, {x: 28, y: 10, width: 488, height: 480});
   //Move the blob monsters
   blobs.forEach(function(blob) {
-
     //Move the blob
     blob.y += blob.vy;
   
@@ -130,18 +133,44 @@ function play() {//All the game logic goes here
     }
   });
   //Check for a collision between the blobs and the explorer
+  if(explorerHit) {
+
+    //Make the explorer semi-transparent
+    explorer.alpha = 0.5;
+  
+    //Reduce the width of the health bar's inner rectangle by 1 pixel
+    healthBar.outer.width -= 1;
+    explorerHit = false;
+  } else {
+  
+    //Make the explorer fully opaque (non-transparent) if it hasn't been hit
+    explorer.alpha = 1;
+  }
   //Check for a collision between the explorer and the treasure
+  if (hitTestRectangle(explorer, treasure)) {
+    treasure.x = explorer.x + 8;
+    treasure.y = explorer.y + 8;
+  }
   //Check for a collision between the treasure and the door
+  if (hitTestRectangle(treasure, door)) {
+    state = end;
+    message.text = "You won!";
+  }
   //Decide whether the game has been won or lost
+  if (healthBar.outer.width < 0) {
+    state = end;
+    message.text = "You lost!";
+  }
   //Change the game `state` to `end` when the game is finsihed
 }
 
-
-function gameLoop() {
+function gameLoop(delta) {
   //Runs the current game `state` in a loop and renders the sprites
-  play()
+  state(delta);
 }
 
 function end() {
   //All the code that should run at the end of the game
+  gameScene.visible = false;
+  gameOverScene.visible = true;
 }
