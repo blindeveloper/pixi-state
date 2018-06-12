@@ -1,3 +1,5 @@
+import * as PIXI from 'pixi.js'
+
 const GraphicPrimitives = {
   newRectangle: () => {
     let rectangle = new PIXI.Graphics()

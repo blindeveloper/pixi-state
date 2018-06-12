@@ -1,0 +1,22 @@
+todo:
+- react-router-redux?
+done:
+- to modules fs
+- storybook
+- resource API
+- routing
+- react-router?***routing in react
+- react-router-dom?***routing for web app, depends on react-router
+- eslint
+- setup debugger
+- react-redux?***connection betwin react and redux
+- prop-types***defining of types for props, similar to ts interaces
+- redux***single state as presentation of whole app
+- source map setup
+- minify css in prod state
+- webpack-dev-server
+- jest
+- scss
+- prod and dev builds
+- first component
+- index to build stream

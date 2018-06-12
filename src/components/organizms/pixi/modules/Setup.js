@@ -1,6 +1,7 @@
 import { getNewTexture, ActionListener, randomInt } from '../Utils'
 import GameLoop from './GameLoop'
 import Play from './Play'
+import * as PIXI from 'pixi.js'
 
 let gameScene,
 gameOverScene,
@@ -23,9 +24,7 @@ const Setup = (app) => {
   //Create a `gameOverScene` group
   gameOverScene = new PIXI.Container();
   app.stage.addChild(gameOverScene);
-  console.log('PIXI: ', PIXI.loader.resources['../img/treasureHunter.json']);
-  
-  texturesList = PIXI.loader.resources['../img/treasureHunter.json'].textures
+  texturesList = PIXI.loader.resources['./src/components/organizms/pixi/img/treasureHunter.json'].textures
   
   //Create the `dungeon` sprite
   dungeon = getNewTexture(texturesList, 'dungeon.png')

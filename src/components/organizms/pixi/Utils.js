@@ -1,3 +1,5 @@
+import * as PIXI from 'pixi.js'
+
 export const loadProgressHandler = (loader, resource) => {
   console.log('loading: ' + resource.url); 
   console.log('progress: ' + loader.progress + '%'); 
@@ -87,6 +89,7 @@ export const contain = (sprite, container) => {
 }
 
 export const getNewTexture = (texturesList, textureName) => {
+  console.log('texturesList: ', texturesList);
   return new PIXI.Sprite(texturesList[textureName])
 }
 
